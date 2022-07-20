@@ -177,6 +177,7 @@ static void type_replace(afl_state_t *afl, u8 *buf, u32 len) {
     // wont help for UTF or non-latin charsets
     do {
 
+#ifdef ENABLE_TYPE_REPLACE
       switch (buf[i]) {
 
         case 'A' ... 'F':
@@ -257,7 +258,9 @@ static void type_replace(afl_state_t *afl, u8 *buf, u32 len) {
 
     } while (c == buf[i]);
 
-    buf[i] = c;
+#else
+    buf[i] = rand_below(afl, 0x100);
+#endif
 
   }
 
